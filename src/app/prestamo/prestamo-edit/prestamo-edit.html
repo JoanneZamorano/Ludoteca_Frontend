@@ -1,0 +1,57 @@
+<div class="container">
+    @if (id()) {
+        <h1>Modificar Préstamo</h1>
+    } @else {
+        <h1>Crear Préstamo</h1>
+    }
+
+    <form>
+        <mat-form-field>
+            <mat-label>Identificador</mat-label>
+            <input type="text" matInput placeholder="Identificador" [(ngModel)]="id" name="id" disabled>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Juego</mat-label>
+            <mat-select [ngModel]="game()" (ngModelChange)="game.set($event)" name="game">
+                @for (item of games(); track item.id) {
+                    <mat-option [value]="item">{{ item.title }}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Cliente</mat-label>
+            <mat-select [ngModel]="customer()" (ngModelChange)="customer.set($event)" name="customer">
+                @for (item of customers(); track item.id) {
+                    <mat-option [value]="item">{{ item.name }}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
+         <mat-form-field>
+
+        <mat-label>Fecha Inicio</mat-label>
+            <input matInput [matDatepicker]="pickerStart" [ngModel]="startDate()"
+    (ngModelChange)="startDate.set($event)" name="startDate">
+            <mat-datepicker-toggle matIconSuffix [for]="pickerStart"></mat-datepicker-toggle>
+            <mat-datepicker #pickerStart></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field>
+
+        <mat-label>Fecha Fin</mat-label>
+            <input matInput [matDatepicker]="pickerEnd" [ngModel]="endDate()"
+    (ngModelChange)="endDate.set($event)" name="endDate">
+            <mat-datepicker-toggle matIconSuffix [for]="pickerEnd">
+            </mat-datepicker-toggle>
+            <mat-datepicker #pickerEnd></mat-datepicker>
+        </mat-form-field>
+
+    </form>
+
+    <div class="buttons">
+        <button mat-stroked-button (click)="onClose()">Cerrar</button>
+        <button mat-flat-button color="primary" (click)="onSave()">Guardar</button>
+    </div>
+</div>

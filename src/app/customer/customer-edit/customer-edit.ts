@@ -48,7 +48,7 @@ export class CustomerEdit implements OnInit{
     const customer = { id, name } as Customer;
       this.CustomerService.saveCustomer(customer).subscribe({
         next: ()=>{
-          this.dialogRef.close(true);
+          this.onClose();
         },
         error: ()=>{
           this.errorMessage.set('Ya hay un cliente con ese nombre')
