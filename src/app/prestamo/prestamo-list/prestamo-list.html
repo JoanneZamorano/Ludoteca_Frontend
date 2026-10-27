@@ -1,5 +1,51 @@
-
 <div class="container">
+
+    <div class="filters">
+
+        <mat-form-field>
+
+            <mat-label>Juego</mat-label>
+            <mat-select
+                [ngModel]="filterGame()" (ngModelChange)="filterGame.set($event)" name="filterGame">
+
+                <mat-option [value]="null">Todos</mat-option>
+                @for (game of games(); track game.id) {
+                    <mat-option [value]="game">{{ game.title }}</mat-option>
+                }
+
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+
+            <mat-label>Cliente</mat-label>
+            <mat-select
+                [ngModel]="filterCustomer()" (ngModelChange)="filterCustomer.set($event)" name="filterCustomer">
+                <mat-option [value]="null">Todos</mat-option>
+                @for (customer of customers(); track customer.id) {
+                    <mat-option [value]="customer">{{ customer.name }}</mat-option>
+                }
+            </mat-select>
+
+        </mat-form-field>
+
+        <mat-form-field>
+
+            <mat-label>Fecha</mat-label>
+            <input matInput [matDatepicker]="pickerFilterDate" [ngModel]="filterDate()" (ngModelChange)="filterDate.set($event)" name="filterDate">
+            <mat-datepicker-toggle matIconSuffix [for]="pickerFilterDate"></mat-datepicker-toggle>
+            <mat-datepicker #pickerFilterDate> </mat-datepicker>
+
+        </mat-form-field>
+
+        <div class="buttons">
+            <button mat-stroked-button (click)="cleanFilters()">Limpiar</button>
+            <button mat-flat-button color="primary" (click)="loadPage()">Filtrar</button>
+        </div>
+    </div>
+
+
+
     <h1>Listado de Prestamos</h1>
 
     <mat-table [dataSource]="dataSource"> 
@@ -20,12 +66,12 @@
 
         <ng-container matColumnDef="startDate">
             <mat-header-cell *matHeaderCellDef> Fecha Inicio  </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.startDate}} </mat-cell>
+            <mat-cell *matCellDef="let element"> {{ element.startDate | date:'dd/MM/yyyy' }} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="endDate">
             <mat-header-cell *matHeaderCellDef> Fecha Fin  </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.endDate}} </mat-cell>
+            <mat-cell *matCellDef="let element"> {{element.endDate | date:'dd/MM/yyyy'}} </mat-cell>
         </ng-container>
 
       

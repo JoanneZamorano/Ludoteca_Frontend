@@ -48,6 +48,7 @@ export class PrestamoEdit implements OnInit{
   protected readonly endDate = signal<Date | null>(null);
   protected readonly games = signal<Game[]>([]);
   protected readonly customers = signal<Customer[]>([]);
+  errorMessage = signal('');
 
   loadFormData(initialData: Prestamo | null){
     this.id.set(initialData?.id ?? null);
@@ -76,6 +77,8 @@ export class PrestamoEdit implements OnInit{
     const startDate = this.startDate();
     const endDate = this.endDate();
 
+    this.errorMessage.set('');
+
     const requiredFields = ["game", "customer", "startDate", "endDate"] as const;
     const data = {game, customer, startDate, endDate}
        if(!validateFields(data, requiredFields)){
@@ -96,8 +99,31 @@ export class PrestamoEdit implements OnInit{
         this.dialogRef.close(true);
       },
       error: (err) => {
-        console.error('ERROR', err);
+        console.log(err);
+        console.log(err.error);
+        console.log(err.error?.message);
+
+        const message = err.error;
+
+        if (message === 'Game not available') {
+          this.errorMessage.set(
+            'El juego ya está prestado en las fechas seleccionadas'
+          );
+        } else if (message === 'Customer has 2 loans') {
+          this.errorMessage.set(
+            'El cliente ya tiene 2 préstamos activos'
+          );
+        } else if (message === 'loans cannont exceed 14 days') {
+          this.errorMessage.set(
+            'El préstamo no puede superar los 14 días'
+          );
+        } else {
+          this.errorMessage.set(
+            'Se ha producido un error al guardar el préstamo'
+          );
+        }
       }
+
     });
 
   }
